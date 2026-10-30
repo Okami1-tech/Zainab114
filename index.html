@@ -1,0 +1,1657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#100d22">
+<title>The Moonlit Garden — For Sarauniya 💜</title>
+
+<style>
+:root {
+  --night: #100d22;
+  --night2: #1a1231;
+  --purple: #bba1ff;
+  --pink: #ffc4dd;
+  --gold: #f6dfab;
+  --white: #fff7f3;
+  --muted: #d9cde7;
+  --green: #a7c6a3;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  min-height: 100%;
+  background: var(--night);
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  overflow-x: hidden;
+  color: var(--white);
+  background: var(--night);
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+button {
+  font: inherit;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 5px;
+}
+
+#sky {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 15%, #38234e 0%, transparent 48%),
+    radial-gradient(ellipse at 0% 100%, #302047 0%, transparent 45%),
+    linear-gradient(180deg, #100d22 0%, #17122c 55%, #100d22 100%);
+}
+
+#starCanvas {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+
+.sky-glow {
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  filter: blur(85px);
+  opacity: .16;
+  animation: drift 16s ease-in-out infinite alternate;
+}
+
+.glow-a {
+  background: #b18aff;
+  left: -120px;
+  top: 20%;
+}
+
+.glow-b {
+  background: #ff9ecb;
+  right: -130px;
+  bottom: 5%;
+  animation-delay: -7s;
+}
+
+@keyframes drift {
+  to { transform: translate(45px,-35px) scale(1.2); }
+}
+
+#app {
+  position: relative;
+  z-index: 1;
+  min-height: 100svh;
+}
+
+.scene {
+  display: none;
+  min-height: 100svh;
+  width: 100%;
+  padding: 46px 22px 34px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  animation: sceneIn 1s ease both;
+  position: relative;
+}
+
+.scene.active {
+  display: flex;
+}
+
+@keyframes sceneIn {
+  from { opacity: 0; transform: translateY(13px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.kicker {
+  font: 10px/1.7 Arial, sans-serif;
+  letter-spacing: 3.2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0 0 19px;
+}
+
+h1, h2, h3, p {
+  margin-top: 0;
+}
+
+h1 {
+  font-weight: normal;
+  font-size: clamp(43px, 11vw, 67px);
+  line-height: 1.02;
+  letter-spacing: -1.8px;
+  margin-bottom: 17px;
+}
+
+h2 {
+  font-weight: normal;
+  font-size: clamp(31px, 8vw, 46px);
+  line-height: 1.12;
+  letter-spacing: -.7px;
+  margin-bottom: 16px;
+}
+
+p {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.9;
+  max-width: 370px;
+}
+
+.italic {
+  font-style: italic;
+  color: var(--pink);
+}
+
+.gold {
+  color: var(--gold);
+}
+
+.purple {
+  color: var(--purple);
+}
+
+.rule {
+  width: 64px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 13px auto 23px;
+}
+
+.small {
+  font-size: 12px;
+  line-height: 1.85;
+}
+
+.signature {
+  color: var(--gold);
+  font-size: 17px;
+  font-style: italic;
+  margin: 8px 0 18px;
+}
+
+.btn {
+  min-height: 48px;
+  padding: 13px 22px;
+  border: 1px solid rgba(246,223,171,.52);
+  border-radius: 999px;
+  background: rgba(255,255,255,.045);
+  color: var(--white);
+  cursor: pointer;
+  font-size: 13px;
+  letter-spacing: .3px;
+  transition: background .25s, transform .25s, border-color .25s;
+  margin-top: 12px;
+  max-width: 100%;
+}
+
+.btn:active {
+  transform: scale(.97);
+}
+
+.btn:hover {
+  background: rgba(187,161,255,.13);
+  border-color: var(--pink);
+}
+
+.secondary {
+  border-color: rgba(187,161,255,.25);
+  color: #d9cde7;
+}
+
+#progressWrap {
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: rgba(255,255,255,.07);
+  display: none;
+}
+
+#progressWrap.visible {
+  display: block;
+}
+
+#progressBar {
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--purple), var(--pink), var(--gold));
+  transition: width .7s ease;
+}
+
+#pageNumber {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  right: 17px;
+  top: 17px;
+  font: 10px Arial, sans-serif;
+  letter-spacing: 2px;
+  color: #ddcdea;
+}
+
+#pageNumber.visible {
+  display: block;
+}
+
+/* ---------------------------------
+   SCENE 1 — THE ENCHANTED ENTRANCE
+---------------------------------- */
+
+.gate {
+  position: relative;
+  width: 210px;
+  height: 215px;
+  margin-bottom: 20px;
+  display: grid;
+  place-items: center;
+}
+
+.gate-ring {
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(246,223,171,.4);
+  border-radius: 50%;
+  animation: rotate 30s linear infinite;
+}
+
+.gate-ring::before,
+.gate-ring::after {
+  content: "✦";
+  position: absolute;
+  color: var(--gold);
+  font-size: 17px;
+}
+
+.gate-ring::before {
+  top: 12px;
+  left: 35px;
+}
+
+.gate-ring::after {
+  right: 28px;
+  bottom: 15px;
+}
+
+.gate-ring.inner {
+  inset: 24px;
+  border-color: rgba(255,196,221,.25);
+  animation-duration: 43s;
+  animation-direction: reverse;
+}
+
+@keyframes rotate {
+  to { transform: rotate(360deg); }
+}
+
+.gate-moon {
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  position: relative;
+  background: radial-gradient(circle at 35% 28%, #fffaf0, #f1d9ef 55%, #b8a0d5);
+  box-shadow: 0 0 45px rgba(246,223,255,.25), 0 0 110px rgba(187,161,255,.14);
+  display: grid;
+  place-items: center;
+  font-size: 44px;
+  animation: breathe 4s ease-in-out infinite alternate;
+}
+
+@keyframes breathe {
+  to { box-shadow: 0 0 65px rgba(246,223,255,.4), 0 0 130px rgba(187,161,255,.22); }
+}
+
+.entrance-spark {
+  position: absolute;
+  font-size: 17px;
+  color: var(--pink);
+  animation: twinkle 2.5s ease-in-out infinite alternate;
+}
+
+.es1 { left: 7px; top: 50px; }
+.es2 { right: 5px; top: 79px; animation-delay: -1s; }
+.es3 { left: 42px; bottom: 6px; animation-delay: -.4s; }
+
+@keyframes twinkle {
+  to { opacity: .3; transform: scale(.7) rotate(25deg); }
+}
+
+/* ---------------------------------
+   SCENE 2 — THE GARDEN
+---------------------------------- */
+
+.garden {
+  width: min(100%, 360px);
+  height: 290px;
+  position: relative;
+  margin: 4px auto 8px;
+  overflow: hidden;
+  border: 1px solid rgba(187,161,255,.17);
+  border-radius: 180px 180px 20px 20px;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(246,223,171,.12), transparent 55%),
+    linear-gradient(180deg, rgba(47,35,73,.75), rgba(19,31,41,.65) 78%, rgba(20,30,31,.9));
+  box-shadow: inset 0 0 55px rgba(0,0,0,.16), 0 22px 55px rgba(0,0,0,.12);
+}
+
+.garden-moon {
+  position: absolute;
+  right: 42px;
+  top: 28px;
+  font-size: 37px;
+  color: var(--gold);
+  filter: drop-shadow(0 0 12px rgba(246,223,171,.3));
+}
+
+.garden-hill {
+  position: absolute;
+  left: -15%;
+  width: 130%;
+  height: 90px;
+  bottom: -22px;
+  border-radius: 50% 50% 0 0;
+  background: linear-gradient(180deg, #293d3b, #152a2d);
+}
+
+.garden-hill.back {
+  left: 15%;
+  bottom: 14px;
+  width: 100%;
+  height: 78px;
+  opacity: .7;
+  background: #253735;
+}
+
+.flower {
+  position: absolute;
+  z-index: 2;
+  bottom: 53px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  font-size: 39px;
+  cursor: pointer;
+  transform-origin: bottom center;
+  animation: flowerSway 4s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 8px rgba(255,196,221,.12));
+}
+
+.flower::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 33px;
+  width: 2px;
+  height: 49px;
+  background: #89a68b;
+  transform: translateX(-50%);
+  z-index: -1;
+}
+
+.flower.f1 { left: 15%; font-size: 35px; }
+.flower.f2 { left: 39%; bottom: 69px; font-size: 47px; animation-delay: -1.5s; }
+.flower.f3 { right: 14%; font-size: 37px; animation-delay: -.6s; }
+.flower.f4 { left: 62%; bottom: 42px; font-size: 28px; animation-delay: -2s; }
+.flower.f5 { left: 26%; bottom: 37px; font-size: 27px; animation-delay: -1s; }
+
+@keyframes flowerSway {
+  from { transform: rotate(-5deg); }
+  to { transform: rotate(5deg); }
+}
+
+.flower-glow {
+  position: absolute;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: #ffc4dd;
+  filter: blur(18px);
+  opacity: 0;
+  transition: opacity .5s;
+}
+
+.flower.opened .flower-glow {
+  opacity: .75;
+}
+
+.flower.opened {
+  filter: drop-shadow(0 0 13px rgba(255,196,221,.65));
+}
+
+.firefly {
+  position: absolute;
+  z-index: 3;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #fff2bd;
+  box-shadow: 0 0 9px 3px rgba(255,236,162,.5);
+  animation: fireflyFloat 5s ease-in-out infinite alternate;
+}
+
+@keyframes fireflyFloat {
+  to { transform: translate(13px,-19px); opacity: .25; }
+}
+
+.garden-message {
+  width: min(100%, 340px);
+  min-height: 67px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.8;
+  margin: 10px auto 2px;
+}
+
+/* ---------------------------------
+   SCENE 3 — TEDDY BEAR
+---------------------------------- */
+
+.teddy-stage {
+  position: relative;
+  width: 260px;
+  height: 245px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 14px;
+}
+
+.teddy-halo {
+  position: absolute;
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(187,161,255,.19), transparent 72%);
+  animation: breathe 3s ease-in-out infinite alternate;
+}
+
+.teddy-body {
+  position: relative;
+  font-size: 115px;
+  filter: drop-shadow(0 13px 16px rgba(0,0,0,.22));
+  animation: teddyRock 4s ease-in-out infinite;
+  z-index: 2;
+}
+
+@keyframes teddyRock {
+  0%,100% { transform: rotate(-3deg) translateY(0); }
+  50% { transform: rotate(3deg) translateY(-7px); }
+}
+
+.teddy-heart {
+  position: absolute;
+  z-index: 3;
+  left: calc(50% + 15px);
+  top: 140px;
+  font-size: 31px;
+  animation: heartBeat 1.8s ease-in-out infinite;
+}
+
+@keyframes heartBeat {
+  0%,100% { transform: scale(.95); }
+  50% { transform: scale(1.16); }
+}
+
+.teddy-caption {
+  font-size: 10px;
+  letter-spacing: 2px;
+  font-family: Arial, sans-serif;
+  color: var(--gold);
+}
+
+.teddy-secret {
+  display: none;
+  width: min(100%, 355px);
+  margin: 17px auto 0;
+  padding: 21px;
+  text-align: left;
+  border: 1px solid rgba(246,223,171,.22);
+  border-radius: 17px;
+  background: rgba(255,255,255,.045);
+  animation: sceneIn .6s ease both;
+}
+
+.teddy-secret.show {
+  display: block;
+}
+
+.teddy-secret p {
+  font-size: 14px;
+  line-height: 1.9;
+  margin-bottom: 10px;
+}
+
+.teddy-secret .teddy-sign {
+  text-align: right;
+  color: var(--pink);
+  font-style: italic;
+}
+
+/* ---------------------------------
+   SCENE 4 — THE CONSTELLATION LION
+---------------------------------- */
+
+.lion-universe {
+  width: min(100%, 360px);
+  height: 275px;
+  position: relative;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(187,161,255,.08), transparent 70%);
+}
+
+.lion-orbit {
+  position: absolute;
+  inset: 24px 15px;
+  border: 1px solid rgba(246,223,171,.2);
+  border-radius: 50%;
+  transform: rotate(-18deg);
+}
+
+.lion-orbit.two {
+  inset: 42px 0;
+  transform: rotate(25deg);
+  border-color: rgba(255,196,221,.16);
+}
+
+.lion-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 118px;
+  height: 118px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 65px;
+  background: radial-gradient(circle at 35% 25%, #59406e, #21182f 76%);
+  border: 1px solid rgba(246,223,171,.3);
+  box-shadow: 0 0 45px rgba(187,161,255,.16);
+}
+
+.lion-star {
+  position: absolute;
+  border: 0;
+  padding: 8px;
+  background: transparent;
+  color: var(--gold);
+  font-size: 22px;
+  cursor: pointer;
+  animation: twinkle 2s ease-in-out infinite alternate;
+}
+
+.ls1 { top: 23px; left: 20%; }
+.ls2 { top: 60px; right: 7%; animation-delay: -.8s; }
+.ls3 { bottom: 30px; right: 22%; animation-delay: -.3s; }
+.ls4 { bottom: 39px; left: 8%; animation-delay: -1.2s; }
+.ls5 { top: 2px; right: 32%; animation-delay: -.5s; }
+
+.lion-note {
+  width: min(100%, 335px);
+  min-height: 67px;
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--muted);
+}
+
+/* ---------------------------------
+   SCENE 5 — THE LETTER
+---------------------------------- */
+
+.letter-scene {
+  width: min(100%, 385px);
+  margin: 0 auto;
+  perspective: 900px;
+}
+
+.letter-cover {
+  position: relative;
+  min-height: 290px;
+  padding: 31px 23px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(246,223,171,.35);
+  border-radius: 12px;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255,255,255,.08), transparent 70%),
+    linear-gradient(150deg, #382746, #1e172e 65%, #261c36);
+  box-shadow: 0 20px 60px rgba(0,0,0,.2);
+  transition: .8s ease;
+  overflow: hidden;
+}
+
+.letter-cover::before,
+.letter-cover::after {
+  content: "✧";
+  position: absolute;
+  color: rgba(246,223,171,.55);
+  font-size: 22px;
+}
+
+.letter-cover::before { top: 13px; left: 16px; }
+.letter-cover::after { bottom: 13px; right: 16px; }
+
+.letter-seal {
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  border: 1px solid rgba(246,223,171,.48);
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+  color: var(--pink);
+  margin: 15px 0;
+  background: rgba(255,255,255,.025);
+}
+
+.letter-cover h3 {
+  font-weight: normal;
+  font-size: 27px;
+  color: var(--pink);
+  margin-bottom: 12px;
+}
+
+.letter-cover p {
+  font-size: 13px;
+}
+
+.letter-cover.open {
+  display: none;
+}
+
+.letter-paper {
+  display: none;
+  width: 100%;
+  text-align: left;
+  padding: 25px 21px;
+  background: linear-gradient(160deg, #f9ebdf, #f2e0e8);
+  color: #49344c;
+  border-radius: 7px;
+  box-shadow: 0 18px 55px rgba(0,0,0,.23);
+  animation: paperOpen .9s ease both;
+}
+
+.letter-paper.show {
+  display: block;
+}
+
+@keyframes paperOpen {
+  from { opacity: 0; transform: rotateX(-12deg) translateY(12px); }
+  to { opacity: 1; transform: rotateX(0) translateY(0); }
+}
+
+.letter-paper .letter-to {
+  color: #7a4e75;
+  font-size: 23px;
+  font-style: italic;
+  margin-bottom: 19px;
+}
+
+.letter-paper p {
+  color: #57465a;
+  font-size: 14px;
+  line-height: 1.9;
+  margin-bottom: 15px;
+}
+
+.letter-paper .letter-end {
+  color: #8b5377;
+  text-align: right;
+  font-size: 18px;
+  font-style: italic;
+  line-height: 1.7;
+  margin-top: 22px;
+}
+
+/* ---------------------------------
+   SCENE 6 — GARDEN OF DU'A
+---------------------------------- */
+
+.dua-garden {
+  position: relative;
+  width: min(100%, 355px);
+  padding: 27px 21px;
+  border-radius: 25px;
+  border: 1px solid rgba(187,161,255,.25);
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(187,161,255,.12), transparent 60%),
+    rgba(255,255,255,.025);
+  box-shadow: 0 22px 55px rgba(0,0,0,.12);
+}
+
+.dua-moon {
+  font-size: 35px;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 0 12px rgba(246,223,171,.3));
+}
+
+.dua-flower-row {
+  font-size: 24px;
+  letter-spacing: 8px;
+  margin: 14px 0;
+}
+
+.dua-garden p {
+  font-size: 14px;
+  line-height: 1.95;
+  margin-bottom: 14px;
+}
+
+.ameen {
+  color: var(--pink);
+  font-size: 19px;
+  font-style: italic;
+  margin-top: 17px;
+}
+
+/* ---------------------------------
+   SCENE 7 — FINAL REVEAL
+---------------------------------- */
+
+.final-garden {
+  position: relative;
+  width: 225px;
+  height: 205px;
+  margin: 0 auto 18px;
+}
+
+.final-halo {
+  position: absolute;
+  inset: 9px;
+  border-radius: 50%;
+  border: 1px solid rgba(246,223,171,.32);
+  animation: rotate 35s linear infinite;
+}
+
+.final-halo::before {
+  content: "✦";
+  position: absolute;
+  top: 14px;
+  left: 30px;
+  color: var(--gold);
+}
+
+.final-halo::after {
+  content: "✧";
+  position: absolute;
+  bottom: 12px;
+  right: 28px;
+  color: var(--pink);
+  font-size: 20px;
+}
+
+.final-moon {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  top: 22px;
+  left: 62px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 28%, #fff8ee, #e8d2f0 70%, #bba1ff);
+  box-shadow: 0 0 55px rgba(246,223,255,.2);
+}
+
+.final-teddy {
+  position: absolute;
+  bottom: 9px;
+  left: 17px;
+  font-size: 55px;
+  transform: rotate(-8deg);
+}
+
+.final-lion {
+  position: absolute;
+  bottom: 6px;
+  right: 9px;
+  font-size: 62px;
+  filter: drop-shadow(0 0 12px rgba(246,223,171,.2));
+}
+
+.final-heart {
+  position: absolute;
+  top: 85px;
+  left: 99px;
+  font-size: 29px;
+  filter: drop-shadow(0 0 9px rgba(255,196,221,.4));
+  animation: heartBeat 2s ease-in-out infinite;
+}
+
+.final-message {
+  max-width: 355px;
+  font-size: 15px;
+  line-height: 1.95;
+  color: var(--muted);
+}
+
+.final-promise {
+  color: var(--pink);
+  font-size: clamp(28px, 7.5vw, 38px);
+  font-style: italic;
+  line-height: 1.35;
+  margin: 18px auto;
+}
+
+.final-end {
+  color: var(--gold);
+  font-size: 17px;
+  font-style: italic;
+  line-height: 1.8;
+  margin-top: 18px;
+}
+
+.final-extra {
+  display: none;
+  width: min(100%, 340px);
+  margin-top: 15px;
+  padding: 18px;
+  border-top: 1px solid rgba(246,223,171,.3);
+  animation: sceneIn .8s ease both;
+}
+
+.final-extra.show {
+  display: block;
+}
+
+.final-extra p {
+  font-size: 14px;
+}
+
+/* Floating little things */
+
+.floaty {
+  position: fixed;
+  z-index: 20;
+  pointer-events: none;
+  animation: floatUp 2.8s ease-out forwards;
+}
+
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(12px) scale(.5) rotate(0); }
+  15% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-145px) scale(1.15) rotate(35deg); }
+}
+
+/* Responsive */
+
+@media (max-height: 720px) {
+  .scene { padding-top: 36px; padding-bottom: 28px; }
+  .gate { transform: scale(.8); margin: -8px 0 0; }
+  .garden { height: 245px; }
+  .teddy-stage { height: 190px; }
+  .teddy-body { font-size: 95px; }
+  .teddy-heart { top: 112px; }
+  .lion-universe { height: 225px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div id="sky">
+  <canvas id="starCanvas"></canvas>
+  <div class="sky-glow glow-a"></div>
+  <div class="sky-glow glow-b"></div>
+</div>
+
+<div id="pageNumber">01 / 07</div>
+
+<div id="progressWrap">
+  <div id="progressBar"></div>
+</div>
+
+<main id="app">
+
+  <!-- 1. THE ENCHANTED ENTRANCE -->
+  <section class="scene active" id="s1">
+
+    <div class="kicker">A place beyond the ordinary</div>
+
+    <div class="gate">
+      <div class="gate-ring"></div>
+      <div class="gate-ring inner"></div>
+      <div class="gate-moon">🦁</div>
+      <span class="entrance-spark es1">✧</span>
+      <span class="entrance-spark es2">✦</span>
+      <span class="entrance-spark es3">♡</span>
+    </div>
+
+    <h1>The Moonlit<br><span class="italic">Garden.</span></h1>
+
+    <div class="rule"></div>
+
+    <p>
+      Somewhere beneath the same moon,<br>
+      a little world was made for one very special girl.
+    </p>
+
+    <p class="small">
+      A quiet place to rest your thoughts,<br>
+      find a little warmth, and remember that you are cherished.
+    </p>
+
+    <div class="signature">For my Sarauniya 💜</div>
+
+    <button class="btn" onclick="go(2)">
+      Step into the garden ✧
+    </button>
+
+    <p class="small" style="margin-top:18px;color:#9e90b4">
+      CREATED WITH LOVE BY YOUR HAMZAIN
+    </p>
+
+  </section>
+
+
+  <!-- 2. THE MAGICAL GARDEN -->
+  <section class="scene" id="s2">
+
+    <div class="kicker">Chapter I · A little place to breathe</div>
+
+    <h2>Welcome to your<br><span class="italic">secret garden.</span></h2>
+
+    <p class="small">
+      Touch the flowers. Each one has something gentle to tell you.
+    </p>
+
+    <div class="garden">
+
+      <div class="garden-moon">☾</div>
+
+      <div class="firefly" style="left:15%;top:28%"></div>
+      <div class="firefly" style="left:73%;top:43%;animation-delay:-2s"></div>
+      <div class="firefly" style="left:35%;top:58%;animation-delay:-3s"></div>
+      <div class="firefly" style="left:85%;top:65%;animation-delay:-1s"></div>
+      <div class="firefly" style="left:52%;top:25%;animation-delay:-2.5s"></div>
+
+      <div class="garden-hill back"></div>
+      <div class="garden-hill"></div>
+
+      <button class="flower f1" onclick="bloom(this,0)" aria-label="Bloom the first flower">
+        <span class="flower-glow"></span>🌷
+      </button>
+
+      <button class="flower f2" onclick="bloom(this,1)" aria-label="Bloom the second flower">
+        <span class="flower-glow"></span>🌸
+      </button>
+
+      <button class="flower f3" onclick="bloom(this,2)" aria-label="Bloom the third flower">
+        <span class="flower-glow"></span>🌺
+      </button>
+
+      <button class="flower f4" onclick="bloom(this,3)" aria-label="Bloom the fourth flower">
+        <span class="flower-glow"></span>🌼
+      </button>
+
+      <button class="flower f5" onclick="bloom(this,4)" aria-label="Bloom the fifth flower">
+        <span class="flower-glow"></span>🪻
+      </button>
+
+    </div>
+
+    <div class="garden-message" id="gardenMessage" aria-live="polite">
+      The garden is waiting, my Queen. 🌙
+    </div>
+
+    <button class="btn" onclick="go(3)">Follow the little lights →</button>
+
+  </section>
+
+
+  <!-- 3. THE TEDDY'S SECRET -->
+  <section class="scene" id="s3">
+
+    <div class="kicker">Chapter II · A little messenger</div>
+
+    <h2>He brought you<br><span class="italic">something.</span></h2>
+
+    <p class="small">
+      He has been holding it close all the way here.
+    </p>
+
+    <div class="teddy-stage">
+      <div class="teddy-halo"></div>
+      <div class="teddy-body">🧸</div>
+      <div class="teddy-heart">💜</div>
+    </div>
+
+    <div class="teddy-caption">A MESSAGE FROM YOUR LION</div>
+
+    <button class="btn" id="teddyButton" onclick="openTeddy()">
+      Open the little teddy's heart ♡
+    </button>
+
+    <div class="teddy-secret" id="teddySecret">
+
+      <p class="italic" style="font-size:20px">
+        My Sarauniya...
+      </p>
+
+      <p>
+        I have a small message from Hamzain.
+      </p>
+
+      <p>
+        You don't have to make every day a good day.
+        You don't have to smile when you feel tired.
+        And you don't have to prove how strong you are
+        every time life gets difficult.
+      </p>
+
+      <p>
+        Rest when you need rest. Take care of yourself.
+        Give your heart room to breathe.
+      </p>
+
+      <p>
+        The world can ask so much of you sometimes.
+        I hope the people who love you remind you that
+        you are a person who deserves tenderness, too.
+      </p>
+
+      <p class="italic">
+        And somebody sent you this very big teddy bear hug. 🫂
+      </p>
+
+      <div class="teddy-sign">— Your Hamzain 🦁</div>
+
+    </div>
+
+    <button class="btn" onclick="go(4)">There's a lion in the stars →</button>
+
+  </section>
+
+
+  <!-- 4. THE LION CONSTELLATION -->
+  <section class="scene" id="s4">
+
+    <div class="kicker">Chapter III · The lion's constellation</div>
+
+    <h2>Some promises<br>are <span class="italic">quiet.</span></h2>
+
+    <p class="small">
+      Touch the stars surrounding your Lion.
+    </p>
+
+    <div class="lion-universe">
+
+      <div class="lion-orbit"></div>
+      <div class="lion-orbit two"></div>
+
+      <div class="lion-center">🦁</div>
+
+      <button class="lion-star ls1" onclick="lionMessage(0)" aria-label="First lion star">✦</button>
+      <button class="lion-star ls2" onclick="lionMessage(1)" aria-label="Second lion star">✧</button>
+      <button class="lion-star ls3" onclick="lionMessage(2)" aria-label="Third lion star">✦</button>
+      <button class="lion-star ls4" onclick="lionMessage(3)" aria-label="Fourth lion star">✧</button>
+      <button class="lion-star ls5" onclick="lionMessage(4)" aria-label="Fifth lion star">✦</button>
+
+    </div>
+
+    <div class="lion-note" id="lionNote" aria-live="polite">
+      Five little stars. Five things your Lion wants you to know. 💜
+    </div>
+
+    <button class="btn" onclick="go(5)">A letter is waiting for you ✉</button>
+
+  </section>
+
+
+  <!-- 5. THE LETTER -->
+  <section class="scene" id="s5">
+
+    <div class="kicker">Chapter IV · Across the distance</div>
+
+    <h2>For the girl I<br><span class="italic">wish I could hold.</span></h2>
+
+    <p class="small">
+      Some words deserve to be opened slowly.
+    </p>
+
+    <div class="letter-scene">
+
+      <div class="letter-cover" id="letterCover">
+
+        <div class="kicker" style="margin-bottom:0">A letter from Hamzain</div>
+
+        <div class="letter-seal">💌</div>
+
+        <h3>My Sarauniya</h3>
+
+        <p style="text-align:center">
+          Written with love.<br>
+          Sealed with a little du'a.
+        </p>
+
+        <button class="btn" onclick="openLetter()">
+          Unfold my letter ♡
+        </button>
+
+      </div>
+
+      <article class="letter-paper" id="letterPaper">
+
+        <div class="letter-to">My Sarauniya, 💜</div>
+
+        <p>
+          When you told me, "I wish I can be close to you,"
+          I wished for the same thing.
+        </p>
+
+        <p>
+          I wished distance could become a little smaller.
+          I wished I could be there to ask how you're feeling,
+          bring you something warm, help you get comfortable,
+          and make the evening a little easier for you.
+        </p>
+
+        <p>
+          Not because I think I can make every discomfort
+          disappear, but because sometimes caring for someone
+          means wanting to be present even when there is
+          nothing extraordinary you can do.
+        </p>
+
+        <p>
+          I know that for now, some of our care has to travel
+          through messages and words. So I want my words to
+          carry something real: patience, reassurance,
+          kindness, and the intention to keep learning
+          how to love you well.
+        </p>
+
+        <p>
+          My Queen, you don't need to be perfectly okay
+          before you talk to me. You don't have to hide
+          the small things until they become big things.
+          I want you to feel safe telling me when something
+          is bothering you, without feeling that you have
+          to explain everything perfectly.
+        </p>
+
+        <p>
+          And I want to remember that caring for you also
+          means respecting when you need quiet, rest,
+          or a little space. Love should feel gentle,
+          not like another thing you have to manage.
+        </p>
+
+        <p>
+          I pray Allah teaches me how to be the kind of man
+          whose presence brings comfort, whose words are
+          trustworthy, and whose actions make his love
+          easier to believe.
+        </p>
+
+        <p>
+          Until we can share more of these ordinary moments
+          in person, please take good care of yourself
+          for me—and, most importantly, for yourself.
+        </p>
+
+        <p>
+          Tonight, get some rest, my baby girl.
+          You don't have to finish this little world
+          all at once. It will still be here when you wake.
+        </p>
+
+        <div class="letter-end">
+          With love and sincere du'a,<br>
+          Your Hamzain 🦁💜
+        </div>
+
+      </article>
+
+    </div>
+
+    <button class="btn" onclick="go(6)">Let's make a du'a together 🤲🏻</button>
+
+  </section>
+
+
+  <!-- 6. THE GARDEN OF DU'A -->
+  <section class="scene" id="s6">
+
+    <div class="kicker">Chapter V · A prayer for my Queen</div>
+
+    <h2>What I ask<br><span class="italic">Allah for you.</span></h2>
+
+    <div class="rule"></div>
+
+    <div class="dua-garden">
+
+      <div class="dua-moon">☾</div>
+
+      <p>
+        Ya Allah, You know what is hidden in our hearts
+        and what we struggle to put into words.
+      </p>
+
+      <p>
+        Please grant my Sarauniya shifaa, ease her discomfort,
+        restore her strength, and bless her with peaceful rest.
+        Protect her wherever she is and surround her with
+        Your mercy.
+      </p>
+
+      <div class="dua-flower-row">🌷 ✨ 🪻</div>
+
+      <p>
+        Ya Rabb, teach me to care for her with patience,
+        gentleness, honesty and responsibility. Correct my
+        shortcomings and help me become a man whose actions
+        reflect the goodness he asks You for.
+      </p>
+
+      <p>
+        If our relationship is good for our deen and our lives,
+        bless it, purify our intentions, and make our path
+        towards Nikkah easy and pleasing to You.
+      </p>
+
+      <p>
+        Let our affection bring us closer to You, and grant
+        us what is best in this life and the Hereafter.
+      </p>
+
+      <div class="dua-flower-row">🤍 🌙 🤍</div>
+
+      <div class="ameen">Ameen, Ya Rabb. 🤲🏻</div>
+
+    </div>
+
+    <button class="btn" onclick="go(7)">One last thing, my Sarauniya…</button>
+
+  </section>
+
+
+  <!-- 7. THE FINAL GARDEN -->
+  <section class="scene" id="s7">
+
+    <div class="kicker">The last little corner of our world</div>
+
+    <div class="final-garden">
+
+      <div class="final-halo"></div>
+      <div class="final-moon"></div>
+
+      <div class="final-teddy">🧸</div>
+      <div class="final-lion">🦁</div>
+      <div class="final-heart">💗</div>
+
+    </div>
+
+    <h2>My Queen.<br><span class="italic">My Hayati.</span></h2>
+
+    <div class="rule"></div>
+
+    <div class="final-message">
+
+      Maybe I cannot always be beside you when you need comfort.
+
+      Maybe there will be evenings when I wish I could do more
+      than send you a message.
+
+      But I can keep learning. I can listen. I can pray for you.
+      I can treat your feelings with care and keep working
+      towards becoming a better man.
+
+      And when life is beautiful, I want to celebrate with you.
+      When life is difficult, I want to meet it with patience
+      and understanding.
+
+      Not perfect love. Just sincere love, nurtured with effort,
+      mercy, and the guidance of Allah.
+
+      <div class="final-promise">
+        Until I can hold your hand,<br>
+        let my words reach you.
+      </div>
+
+      Your Lion is always here, my Sarauniya. 🦁💜
+
+    </div>
+
+    <div class="final-end">
+      From Hamzain,<br>
+      with love for his Queen. 💜
+    </div>
+
+    <button class="btn" onclick="finalReveal()">
+      There's one final secret ✨
+    </button>
+
+    <div class="final-extra" id="finalExtra">
+
+      <p class="italic" style="font-size:21px">
+        My Mrs Muhammad. 💜👑
+      </p>
+
+      <p>
+        May Allah grant you shifaa tonight.
+        May you sleep peacefully, wake with renewed strength,
+        and find ease in the things that have been troubling you.
+      </p>
+
+      <p>
+        You don't have to reply to this whole experience.
+        You don't even have to finish reading it tonight.
+        Rest first, my love.
+      </p>
+
+      <p class="gold">
+        The garden will be here when you return. 🌙
+      </p>
+
+      <p style="text-align:right;font-style:italic">
+        — Your Hamzain 🦁
+      </p>
+
+    </div>
+
+    <button class="btn secondary" onclick="restart()">
+      Walk through the garden again ↺
+    </button>
+
+  </section>
+
+</main>
+
+<script>
+/* =====================================
+   NAVIGATION
+===================================== */
+
+const TOTAL = 7;
+let currentScene = 1;
+
+const pageNumber = document.getElementById("pageNumber");
+const progressWrap = document.getElementById("progressWrap");
+const progressBar = document.getElementById("progressBar");
+
+function go(n) {
+  if (n < 1 || n > TOTAL) return;
+
+  currentScene = n;
+
+  document.querySelectorAll(".scene").forEach(scene => {
+    scene.classList.remove("active");
+  });
+
+  document.getElementById("s" + n).classList.add("active");
+
+  pageNumber.textContent =
+    String(n).padStart(2, "0") + " / " +
+    String(TOTAL).padStart(2, "0");
+
+  pageNumber.classList.add("visible");
+  progressWrap.classList.add("visible");
+  progressBar.style.width = (n / TOTAL * 100) + "%";
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+  if (n === 7) {
+    setTimeout(() => {
+      sprinkle(window.innerWidth / 2, window.innerHeight * .45, 18);
+    }, 500);
+  }
+}
+
+/* =====================================
+   GARDEN FLOWERS
+===================================== */
+
+const flowerWords = [
+  "A little reminder: you are allowed to rest without feeling guilty. 🌷",
+
+  "A little reminder: your thoughtful heart is something beautiful. 🌸",
+
+  "A little reminder: you don't need to have every answer today. 🌺",
+
+  "A little reminder: small steps still count as progress. 🌼",
+
+  "A little reminder: you deserve kindness, including from yourself. 🪻"
+];
+
+function bloom(button, index) {
+  button.classList.toggle("opened");
+
+  const message = document.getElementById("gardenMessage");
+
+  message.style.opacity = "0";
+
+  setTimeout(() => {
+    message.textContent = button.classList.contains("opened")
+      ? flowerWords[index]
+      : "The garden is waiting, my Queen. 🌙";
+
+    message.style.transition = "opacity .45s ease";
+    message.style.opacity = "1";
+  }, 150);
+
+  if (button.classList.contains("opened")) {
+    const rect = button.getBoundingClientRect();
+    sprinkle(rect.left + rect.width / 2, rect.top + rect.height / 2, 6);
+  }
+}
+
+/* =====================================
+   TEDDY SECRET
+===================================== */
+
+function openTeddy() {
+  const secret = document.getElementById("teddySecret");
+  const button = document.getElementById("teddyButton");
+
+  secret.classList.toggle("show");
+
+  button.textContent = secret.classList.contains("show")
+    ? "Hold this little moment ♡"
+    : "Open the little teddy's heart ♡";
+
+  if (secret.classList.contains("show")) {
+    sprinkle(window.innerWidth / 2, window.innerHeight * .48, 12);
+  }
+}
+
+/* =====================================
+   LION CONSTELLATION
+===================================== */
+
+const lionMessages = [
+  "A lion's strength is not only in protecting. It is also in learning when to be gentle. I want to keep learning both. 🦁",
+
+  "You deserve to be listened to, even when your feelings are difficult to explain. Your voice matters to me. 💜",
+
+  "I cannot promise that every day will be easy. I can promise to keep trying to meet difficult moments with honesty and patience. ✨",
+
+  "When you need rest, rest. When you need to speak, speak. You don't have to earn gentleness by pretending to be okay. 🌙",
+
+  "My Queen, may Allah make me a man whose care is visible in his actions, not only in his words. Ameen. 🤲🏻"
+];
+
+function lionMessage(index) {
+  const box = document.getElementById("lionNote");
+
+  box.style.opacity = "0";
+
+  setTimeout(() => {
+    box.textContent = lionMessages[index];
+    box.style.transition = "opacity .5s ease";
+    box.style.opacity = "1";
+  }, 170);
+
+  sprinkle(
+    window.innerWidth / 2,
+    window.innerHeight * .43,
+    5
+  );
+}
+
+/* =====================================
+   LETTER REVEAL
+===================================== */
+
+function openLetter() {
+  document.getElementById("letterCover").classList.add("open");
+  document.getElementById("letterPaper").classList.add("show");
+
+  sprinkle(window.innerWidth / 2, window.innerHeight * .38, 10);
+}
+
+/* =====================================
+   FINAL REVEAL
+===================================== */
+
+function finalReveal() {
+  const extra = document.getElementById("finalExtra");
+
+  extra.classList.toggle("show");
+
+  if (extra.classList.contains("show")) {
+    sprinkle(window.innerWidth / 2, window.innerHeight * .45, 24);
+  }
+}
+
+function restart() {
+  document.getElementById("letterCover").classList.remove("open");
+  document.getElementById("letterPaper").classList.remove("show");
+
+  document.getElementById("teddySecret").classList.remove("show");
+  document.getElementById("teddyButton").textContent =
+    "Open the little teddy's heart ♡";
+
+  document.getElementById("finalExtra").classList.remove("show");
+
+  document.querySelectorAll(".flower").forEach(flower => {
+    flower.classList.remove("opened");
+  });
+
+  document.getElementById("gardenMessage").textContent =
+    "The garden is waiting, my Queen. 🌙";
+
+  document.getElementById("lionNote").textContent =
+    "Five little stars. Five things your Lion wants you to know. 💜";
+
+  go(1);
+}
+
+/* =====================================
+   FLOATING PARTICLES
+===================================== */
+
+const symbols = ["💜", "♡", "✧", "🦋", "✨", "🌸", "🤍", "✦"];
+
+function sprinkle(x, y, count = 8) {
+  for (let i = 0; i < count; i++) {
+    const item = document.createElement("span");
+
+    item.className = "floaty";
+    item.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+
+    item.style.left = (x + (Math.random() - .5) * 130) + "px";
+    item.style.top = (y + (Math.random() - .5) * 40) + "px";
+    item.style.fontSize = (12 + Math.random() * 14) + "px";
+    item.style.animationDuration = (2 + Math.random() * 1.5) + "s";
+
+    document.body.appendChild(item);
+
+    setTimeout(() => item.remove(), 3600);
+  }
+}
+
+/* =====================================
+   NIGHT SKY STARFIELD
+===================================== */
+
+const canvas = document.getElementById("starCanvas");
+const ctx = canvas.getContext("2d");
+
+let width = 0;
+let height = 0;
+let pixelRatio = 1;
+let stars = [];
+let tick = 0;
+
+function resizeCanvas() {
+  pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+  width = window.innerWidth;
+  height = window.innerHeight;
+
+  canvas.width = width * pixelRatio;
+  canvas.height = height * pixelRatio;
+
+  canvas.style.width = width + "px";
+  canvas.style.height = height + "px";
+
+  ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+
+  stars = Array.from({
+    length: Math.min(150, Math.floor(width * height / 5500))
+  }, () => ({
+    x: Math.random() * width,
+    y: Math.random() * height,
+    r: Math.random() * 1.25 + .2,
+    phase: Math.random() * Math.PI * 2,
+    speed: Math.random() * .012 + .003,
+    opacity: Math.random() * .6 + .2
+  }));
+}
+
+function renderStars() {
+  tick++;
+  ctx.clearRect(0, 0, width, height);
+
+  for (const star of stars) {
+    const pulse = Math.sin(tick * star.speed + star.phase);
+    const alpha = Math.max(.08, star.opacity + pulse * .22);
+
+    ctx.beginPath();
+    ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,245,255,${alpha})`;
+    ctx.fill();
+  }
+
+  requestAnimationFrame(renderStars);
+}
+
+window.addEventListener("resize", resizeCanvas);
+
+resizeCanvas();
+renderStars();
+
+/* Begin at the entrance. */
+go(1);
+</script>
+
+</body>
+</html>
